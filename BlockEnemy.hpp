@@ -93,17 +93,17 @@ public:
 	{
 		towns.clear();
 		parseTowns(roads);
-		/*
+		
 		for (int i = 0; i < towns.size(); i++)
 		{
-			std::cout << "Town " << i << " is connected to town(s): ";
+			//std::cout << "Town " << i << " is connected to town(s): ";
 			for (int j = 0; j < towns[i].connectedTowns.size(); j++)
 			{
-				std::cout << towns[i].connectedTowns[j].townNum << " (cost " << towns[i].townTravelCost[j] << ") ";
+				//std::cout << towns[i].connectedTowns[j].townNum << " (cost " << towns[i].townTravelCost[j] << ") ";
 			}
-			std::cout << "\n";
+			//std::cout << "\n";
 		}
-		*/
+		
 		std::stack<int> stack;
 		int totalCost = 0;
 
@@ -130,11 +130,11 @@ public:
 				//std::cout << "disconnecting path\n";
 
 				/*
-				std::cout << "towns in the stack: ";
+				//std::cout << "towns in the stack: ";
 
 				while (stack.size() > 0)
 				{
-					std::cout << stack.top().townNum << " ";
+					//std::cout << stack.top().townNum << " ";
 					stack.pop();
 				}
 				*/
@@ -143,52 +143,63 @@ public:
 
 				if (found)
 				{
-					int lowest;
 					int lowestPartner;
+					int lowest;
+					
 					int lastTown;
 
 					int cost = 0;
 					int disconnectPath = 0;
 
 					lowestPartner = stack.top();
+					lastTown = stack.top();
+
 					stack.pop();
 
 					for (int j = 0; j < towns[stack.top()].connectedTowns.size(); j++)
 					{
-						if (towns[stack.top()].connectedTowns[j].townNum == towns[lowestPartner].townNum)
+						if (towns[stack.top()].connectedTowns[j].townNum == towns[lastTown].townNum)
 						{
 							lowest = stack.top();
+
+							//std::cout << "lastTown: " << towns[lastTown].townNum << "\n";
+							//std::cout << "currentTown: " << towns[stack.top()].townNum << "\n";
 							//std::cout << "current lowest cost: " << towns[stack.top()].townTravelCost[j] << "\n";
+
 							cost = towns[stack.top()].townTravelCost[j];
 							disconnectPath = j;
-
-							lastTown = stack.top();
+							
 							break;
 						}
 					}
 
+					lastTown = stack.top();
 					stack.pop();
 
 					while (stack.size() > 0)
 					{
 						for (int j = 0; j < towns[stack.top()].connectedTowns.size(); j++)
 						{
-							//std::cout << "is cost lower than lowest? " << towns[stack.top()].townTravelCost[j] << "\n";
-
-							if (towns[stack.top()].townTravelCost[j] < cost)
+							if (towns[stack.top()].connectedTowns[j].townNum == towns[lastTown].townNum)
 							{
-								//std::cout << "yes!\n";
-								lowest = stack.top();
-								lowestPartner = lastTown;
+								
+								//std::cout << "lastTown: " << towns[lastTown].townNum << "\n";
+								//std::cout << "currentTown: " << towns[stack.top()].townNum << "\n";
+								//std::cout << "is cost lower than lowest? " << towns[stack.top()].townTravelCost[j] << "\n";
 
-								cost = towns[stack.top()].townTravelCost[j];
-								disconnectPath = j;
+								if (towns[stack.top()].townTravelCost[j] < cost)
+								{
+									//std::cout << "yes!\n";
+									lowest = stack.top();
+									lowestPartner = lastTown;
 
-								lastTown = stack.top();
-								break;
+									cost = towns[stack.top()].townTravelCost[j];
+									disconnectPath = j;
+									break;
+								}
 							}
 						}
-
+						lastTown = stack.top();
 						stack.pop();
 					}
 
