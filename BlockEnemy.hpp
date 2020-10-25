@@ -158,7 +158,7 @@ public:
 						if (towns[stack.top()].connectedTowns[j].townNum == towns[lowestPartner].townNum)
 						{
 							lowest = stack.top();
-
+							//std::cout << "current lowest cost: " << towns[stack.top()].townTravelCost[j] << "\n";
 							cost = towns[stack.top()].townTravelCost[j];
 							disconnectPath = j;
 
@@ -173,9 +173,11 @@ public:
 					{
 						for (int j = 0; j < towns[stack.top()].connectedTowns.size(); j++)
 						{
-							if (towns[stack.top()].connectedTowns[j].townNum == towns[lastTown].townNum && towns[stack.top()].townTravelCost[j] <= cost)
+							//std::cout << "is cost lower than lowest? " << towns[stack.top()].townTravelCost[j] << "\n";
+
+							if (towns[stack.top()].townTravelCost[j] < cost)
 							{
-								//std::cout << "found it\n";
+								//std::cout << "yes!\n";
 								lowest = stack.top();
 								lowestPartner = lastTown;
 
@@ -190,7 +192,7 @@ public:
 						stack.pop();
 					}
 
-					//std::cout << "added " << cost << "\n";
+					//std::cout << "lowest cost was: " << cost << "\n";
 					totalCost += cost;
 
 					//std::cout << "removing town: " << towns[lowest].connectedTowns[disconnectPath].townNum << " from town: " << towns[lowest].townNum << "\n";
@@ -268,7 +270,8 @@ int main()
 	std::cout << test.minEffort(12, { "0 1 3", "2 0 5", "1 3 1", "1 4 8", "1 5 4", "2 6 2", "4 7 11", "4 8 10", "6 9 7", "6 10 9", "6 11 6" }, { 1, 2, 6, 8 }) << "\n";
 	std::cout << test.minEffort(12, { "0 1 3", "2 0 5", "1 3 1", "1 4 8", "1 5 4", "2 6 2", "4 7 11", "4 8 10", "6 9 7", "6 10 9", "6 11 6" }, { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 }) << "\n";
 	std::cout << test.minEffort(4, { "1 3 95", "2 0 71", "2 3 78" }, { 0, 3, 2 }) << "\n";
-
+	std::cout << test.minEffort(12, { "9 5 681", "11 1 398", "6 1 559", "10 3 48", "5 0 978", "0 1 301", "0 2 727", "7 1 609", "3 9 894", "8 10 122", "4 3 127" }, { 11, 8, 1, 6, 4, 7, 9 }) << "\n";
+	
 
 	return 0;
 }
