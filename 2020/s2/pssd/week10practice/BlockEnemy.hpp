@@ -150,14 +150,14 @@ public:
 					int cost = 0;
 					int disconnectPath = 0;
 
-					lowest = stack.top();
+					lowestPartner = stack.top();
 					stack.pop();
 
 					for (int j = 0; j < towns[stack.top()].connectedTowns.size(); j++)
 					{
-						if (towns[stack.top()].connectedTowns[j].townNum == towns[lowest].townNum)
+						if (towns[stack.top()].connectedTowns[j].townNum == towns[lowestPartner].townNum)
 						{
-							lowestPartner = stack.top();
+							lowest = stack.top();
 
 							cost = towns[stack.top()].townTravelCost[j];
 							disconnectPath = j;
@@ -173,8 +173,9 @@ public:
 					{
 						for (int j = 0; j < towns[stack.top()].connectedTowns.size(); j++)
 						{
-							if (towns[stack.top()].connectedTowns[j].townNum == towns[lastTown].townNum && towns[stack.top()].townTravelCost[j] < cost)
+							if (towns[stack.top()].connectedTowns[j].townNum == towns[lastTown].townNum && towns[stack.top()].townTravelCost[j] <= cost)
 							{
+								//std::cout << "found it\n";
 								lowest = stack.top();
 								lowestPartner = lastTown;
 
@@ -191,6 +192,8 @@ public:
 
 					//std::cout << "added " << cost << "\n";
 					totalCost += cost;
+
+					//std::cout << "removing town: " << towns[lowest].connectedTowns[disconnectPath].townNum << " from town: " << towns[lowest].townNum << "\n";
 
 					towns[lowest].connectedTowns.erase(towns[lowest].connectedTowns.begin() + disconnectPath);
 					towns[lowest].townTravelCost.erase(towns[lowest].townTravelCost.begin() + disconnectPath);
@@ -264,6 +267,7 @@ int main()
 	std::cout << test.minEffort(5, { "1 0 1", "1 2 2", "0 3 3", "4 0 4" }, { 3 }) << "\n";
 	std::cout << test.minEffort(12, { "0 1 3", "2 0 5", "1 3 1", "1 4 8", "1 5 4", "2 6 2", "4 7 11", "4 8 10", "6 9 7", "6 10 9", "6 11 6" }, { 1, 2, 6, 8 }) << "\n";
 	std::cout << test.minEffort(12, { "0 1 3", "2 0 5", "1 3 1", "1 4 8", "1 5 4", "2 6 2", "4 7 11", "4 8 10", "6 9 7", "6 10 9", "6 11 6" }, { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 }) << "\n";
+	std::cout << test.minEffort(4, { "1 3 95", "2 0 71", "2 3 78" }, { 0, 3, 2 }) << "\n";
 
 
 	return 0;
