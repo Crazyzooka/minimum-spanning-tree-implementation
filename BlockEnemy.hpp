@@ -1,7 +1,3 @@
-// BlockEnemy.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
-//#include "pch.h"
 #include <iostream>
 #include <vector>
 #include <string>
@@ -103,7 +99,20 @@ public:
 			towns[bInt].connectedTowns.push_back(&towns[aInt]);
 		}
 	}
-
+	
+	/*
+	Constraints
+-	N will be between 2 and 50, inclusive.
+-	roads will contain between 1 and 50 elements, inclusive.
+-	Each element of roads will contain between 5 and 50 characters, inclusive.
+-	Each element of roads will be in the form "a b e" (quotes for clarity) where a and b are distinct integers between 0 and N-1, inclusive, and e is an integer between 1 and 1,000,000, inclusive.
+-	The integers in roads will not contain extra leading zeroes.
+-	There will be exactly one way to get from one town to any other, by following one or more roads.
+-	occupiedTowns will contain between 1 and 50 elements, inclusive.
+-	Each element of occupiedTowns will be between 0 and N-1, inclusive.
+-	The elements of occupiedTowns will be distinct.
+	*/
+	
 	int minEffort(int N, std::vector<std::string> roads, std::vector<int> occupiedTowns)
 	{
 		towns.clear();
@@ -286,30 +295,27 @@ public:
 
 	~BlockEnemy() {};
 };
-/*
+
 int main()
 {
 	BlockEnemy test;
 	
-	//std::cout << test.minEffort(5, { "1 0 1", "1 2 2", "0 3 3", "4 0 4" }, { 3, 2, 4 }) << "\n";
-	//std::cout << test.minEffort(5, { "1 0 1", "1 2 2", "0 3 3", "4 0 4" }, { 3 }) << "\n";
-	//std::cout << test.minEffort(12, { "0 1 3", "2 0 5", "1 3 1", "1 4 8", "1 5 4", "2 6 2", "4 7 11", "4 8 10", "6 9 7", "6 10 9", "6 11 6" }, { 1, 2, 6, 8 }) << "\n";
-	//std::cout << test.minEffort(12, { "0 1 3", "2 0 5", "1 3 1", "1 4 8", "1 5 4", "2 6 2", "4 7 11", "4 8 10", "6 9 7", "6 10 9", "6 11 6" }, { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 }) << "\n";
-	//std::cout << test.minEffort(4, { "1 3 95", "2 0 71", "2 3 78" }, { 0, 3, 2 }) << "\n";
-	//std::cout << test.minEffort(12, { "9 5 681", "11 1 398", "6 1 559", "10 3 48", "5 0 978", "0 1 301", "0 2 727", "7 1 609", "3 9 894", "8 10 122", "4 3 127" }, { 11, 8, 1, 6, 4, 7, 9 }) << "\n";
-	//std::cout << test.minEffort(50, { "24 14 30585", "14 2 17913", "2 1 7185", "14 32 3524", "2 3 23893", "14 42 32358", "1 46 15102", "42 29 20974", "29 11 24873", "2 23 17418", "2 31 3231", "29 12 14447", "11 9 1113", "2 0 8315", "46 34 19524", "32 33 25625", "14 17 30017", "42 18 20966", "9 47 11888", "33 35 23186", "33 13 31662", "2 20 7048", "0 7 13660", "29 21 31953", "13 44 13667", "0 38 26165", "17 27 21876", "9 28 20388", "11 49 8853", "14 10 12501", "7 45 27097", "14 39 5165", "33 16 622", "42 4 20706", "34 36 30941", "28 22 12384", "33 15 32654", "13 19 748", "19 25 18571", "4 40 26503", "10 37 11397", "9 8 19221", "24 43 17180", "0 5 25278", "1 6 20571", "28 48 9621", "2 26 11138", "16 41 2423", "46 30 777" }, { 21, 49, 34, 16, 40, 22, 6, 26, 39, 5, 33, 19, 44, 48, 9, 0, 3, 17, 45, 47 });
-	//std::cout << test.minEffort(50, {"11 49 705350", "45 49 708106", "48 49 557507", "16 49 206030" , "46 49 681085",  "42 49 592851", "29 49 955456", "36 49 644055", "14 49 998371", "25 49 243780", "38 49 676165", "19 49 295695", "37 49 85890", "34 49 772321", "31 49 495278", "35 49 881683", "32 49 509966", "13 49 573322", "41 49 953193", "28 49 684833", "8 49 338711", "22 49 7607", "20 49 988937", "15 49 774045", "12 49 749572", "23 49 197707", "18 49 143647", "30 49 913598", "24 49 784195", "27 49 589280", "17 49 864709", "6 49 689371", "9 49 287833", "21 49 93643", "3 49 628920", "4 49 280025", "7 49 877184", "26 49 161234", "5 49 273188", "0 49 543685", "1 49 960792", "40 49 174364", "33 49 157069", "39 49 268121", "10 49 177457", "43 49 576795", "44 49 498155", "2 49 285189", "47 49 155944" }, { 0, 10, 20, 30, 40, 47 }) << "\n";
+	std::cout << test.minEffort(5, { "1 0 1", "1 2 2", "0 3 3", "4 0 4" }, { 3, 2, 4 }) << "\n";
+	std::cout << "Expected return: 4\n";
+	//To make the communication between town 2 and the other occupied towns impossible, we must destroy one of the first two roads. 
+	//We choose the first one as it requires less effort. Similarly, we choose between the last two roads in order to disconnect towns 3 and 4. 
+	//The total cost is therefore 4.
 
+	std::cout << test.minEffort(12, { "0 1 3", "2 0 5", "1 3 1", "1 4 8", "1 5 4", "2 6 2", "4 7 11", "4 8 10", "6 9 7", "6 10 9", "6 11 6" }, { 1, 2, 6, 8 }) << "\n";
+	std::cout << "Expected return 13\n";
+	//Towns 1 and 2 are on the path from 6 to 8. We have to destroy the sixth road to disconnect town 6 from 2. 
+	//We must destroy one of the first two roads to disconnect towns 1 and 2 and we pick the first one. 
+	//Also, we should destroy one of the roads on the path from 1 to 8 and we choose the fourth road. 
+	//The total cost is 2 + 3 + 8 = 13.
+	
+	std::cout << test.minEffort(12, { "0 1 3", "2 0 5", "1 3 1", "1 4 8", "1 5 4", "2 6 2", "4 7 11", "4 8 10", "6 9 7", "6 10 9", "6 11 6" }, { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 }) << "\n";
+	std::cout << "Expected return 66\n";
+	//We have to destroy all roads this time.
+	
 	return 0;
 }
-*/
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
